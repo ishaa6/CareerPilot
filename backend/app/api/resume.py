@@ -2,7 +2,7 @@ from fastapi import APIRouter, UploadFile, File, Depends, HTTPException
 
 from app.services.pdf_parser import extract_text
 from app.services.resume_parser import parse_resume
-from app.services.add_record import save_resume
+from app.services.add_resume import save_resume
 
 from app.db.models import Resume
 from app.db.database import get_db
