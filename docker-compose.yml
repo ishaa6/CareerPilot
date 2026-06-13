@@ -1,0 +1,16 @@
+name: CareerPilot
+
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: shreyaa
+      POSTGRES_PASSWORD: 6612
+      POSTGRES_DB: careerpilot
+    ports:
+    - "5433:5432"
+
+  qdrant:
+    image: qdrant/qdrant
+    ports:
+      - "6333:6333"
