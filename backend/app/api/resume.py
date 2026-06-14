@@ -1,8 +1,10 @@
 from fastapi import APIRouter, UploadFile, File, Depends, HTTPException
 
-from app.services.pdf_parser import extract_text
-from app.services.resume_parser import parse_resume
-from app.services.add_record import save_resume
+from app.services.resume.pdf_parser import extract_text
+from app.services.resume.resume_parser import parse_resume
+from app.services.resume.add_resume import save_resume
+from app.services.qdrant.resume_vectorizer import vectorize_resume
+from app.services.resume.get_resume import get_resume_by_id
 
 from app.db.models import Resume
 from app.db.database import get_db
@@ -38,10 +40,12 @@ async def upload_resume(
             detail="Resume parsing failed"
         )
 
-    save_resume(db, text, resume_data.model_dump())
+    saved_resume = save_resume(db, text, resume_data.model_dump())
+
+    vectorize_resume(saved_resume.id, text)
 
     return {
-        "message": "Resume uploaded successfully",
+        "message": f"Resume {saved_resume.id} uploaded successfully",
         "file": file.filename
     }
 
@@ -50,9 +54,7 @@ def get_resume(
     id: str,
     db: Session = Depends(get_db)
 ):
-    resume = db.query(Resume).filter(
-        Resume.id == id
-    ).first()
+    resume = get_resume_by_id(db, id)
 
     if not resume:
         raise HTTPException(

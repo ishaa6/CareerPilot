@@ -9,3 +9,11 @@ class Resume(Base):
     id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
     raw_text = Column(Text)
     parsed_json = Column(JSONB)
+
+class JobDescription(Base):
+    __tablename__ = "job_desc"
+
+    id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
+    title = Column(String)
+    company = Column(String)
+    description = Column(Text)
