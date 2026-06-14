@@ -12,3 +12,5 @@ def save_resume(
 
     db.add(resume)
     db.commit()
+
+    return resume

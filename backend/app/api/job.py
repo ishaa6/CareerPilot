@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
 
-from app.services.add_job import save_job
+from app.services.job.add_job import save_job
 from app.db.database import get_db
 from app.models.job_schema import JobCreate
 
