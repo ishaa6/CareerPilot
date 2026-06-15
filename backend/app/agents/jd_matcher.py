@@ -20,11 +20,16 @@ def match_resmue_jd (
         - Strengths
         - Missing skills
         - Recommendations
-        - Summary
+        - Summary (2-3 sentences)
 
-        Only use information explicitly present in the inputs.
-        Only include a skill in missing_skills if it is explicitly required by the job description and clearly absent from the resume.
-        Keep all responses concise.
+        Rules:
+        - Use only information explicitly present in the inputs.
+        - Do not infer or assume skills.
+        - Only include a skill in missing_skills if it is required by the job description and clearly absent from the resume.
+        - Return concise skill names, not sentences.
+        Examples: Kafka, Redis, REST APIs, Distributed Systems, Docker.
+        - Prioritize required skills over preferred skills when calculating match_score.
+        - Keep all responses concise.
 
         Resume:
         {resume_text}
