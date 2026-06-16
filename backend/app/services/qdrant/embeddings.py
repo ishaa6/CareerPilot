@@ -7,6 +7,6 @@ model = SentenceTransformer(
 def embed_text(text: str):
     return model.encode(text).tolist()
 
-VECTOR_SIZE = model.get_embedding_dimension()
+VECTOR_SIZE = 384
 
 
