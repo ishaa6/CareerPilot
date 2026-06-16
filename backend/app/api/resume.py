@@ -49,7 +49,7 @@ async def upload_resume(
         "file": file.filename
     }
 
-@router.get("/resume/{id}")
+@router.get("/{id}")
 def get_resume(
     id: str,
     db: Session = Depends(get_db)

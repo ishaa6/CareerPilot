@@ -1,4 +1,5 @@
 from qdrant_client.models import PointStruct
+import uuid
 
 from app.services.qdrant.qdrant_service import client
 
@@ -15,7 +16,7 @@ def store_chunks(
     ):
         points.append(
             PointStruct(
-                id=f"{resume_id}_{idx}",
+                id=f"{uuid.uuid4()}",
                 vector=vector,
                 payload={
                     "resume_id": resume_id,
