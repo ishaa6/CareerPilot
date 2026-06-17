@@ -46,7 +46,8 @@ async def upload_resume(
 
     return {
         "message": f"Resume {saved_resume.id} uploaded successfully",
-        "file": file.filename
+        "file": file.filename,
+        "resume_id": saved_resume.id
     }
 
 @router.get("/{id}")

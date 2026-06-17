@@ -1,122 +1,75 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { useState } from "react";
+import StepIndicator from "./components/StepIndicator";
+import ResumeUpload from "./components/ResumeUpload";
+import JDForm from "./components/JDForm";
+import AnalysisPage from "./pages/AnalysisPage";
 
-function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+function BrandMark() {
+    return (
+        <svg className="brand-mark" viewBox="0 0 48 48" fill="none">
+            <circle cx="24" cy="24" r="21" stroke="#14181f" strokeWidth="3" />
+            <path d="M13 30a12.4 12.4 0 0 1 22 0" stroke="#d98a2e" strokeWidth="3" strokeLinecap="round" />
+            <circle cx="24" cy="24" r="3" fill="#14181f" />
+            <line x1="24" y1="24" x2="32" y2="17" stroke="#14181f" strokeWidth="3" strokeLinecap="round" />
+        </svg>
+    );
 }
 
-export default App
+function App() {
+    const [step, setStep] = useState(1);
+    const [resume, setResume] = useState(null);
+    const [job, setJob] = useState(null);
+
+    const goToStep = (n) => {
+        if (n === 1) return setStep(1);
+        if (n === 2 && resume) return setStep(2);
+        if (n === 3 && resume && job) return setStep(3);
+    };
+
+    return (
+        <div className="app-shell">
+            <header className="app-header">
+                <a className="brand" href="/">
+                    <span>
+                        <span className="brand-name">CareerPilot</span>
+                    </span>
+                </a>
+            </header>
+
+            <main className="app-main">
+                <StepIndicator current={step} resume={resume} job={job} onSelect={goToStep} />
+
+                {step === 1 && (
+                    <ResumeUpload
+                        onUploaded={(data) => {
+                            setResume(data);
+                            setStep(2);
+                        }}
+                    />
+                )}
+
+                {step === 2 && (
+                    <JDForm
+                        onCreated={(data) => {
+                            setJob(data);
+                            setStep(3);
+                        }}
+                    />
+                )}
+
+                {step === 3 && resume && job && (
+                    <AnalysisPage
+                        resume={resume}
+                        job={job}
+                        onEditResume={() => setStep(1)}
+                        onEditJob={() => setStep(2)}
+                    />
+                )}
+            </main>
+
+            <footer className="app-footer">CareerPilot — match score, gaps, and what to build next</footer>
+        </div>
+    );
+}
+
+export default App;

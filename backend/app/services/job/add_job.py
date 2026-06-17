@@ -13,3 +13,5 @@ def save_job(
 
     db.add(new_job)
     db.commit()
+
+    return new_job

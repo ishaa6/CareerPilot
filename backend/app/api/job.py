@@ -13,7 +13,7 @@ def create_job(
     db: Session = Depends(get_db)
 ):
     try:
-        save_job(db, job)
+        job_data = save_job(db, job)
     except Exception as e:
         raise HTTPException(
             status_code=500,
@@ -21,5 +21,6 @@ def create_job(
         )     
 
     return {
-        "message": "Job saved successfully"
+        "message": "Job saved successfully",
+        "job_id": job_data.id
     }  
