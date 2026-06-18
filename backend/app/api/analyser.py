@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 
 from app.graphs.workflow import graph
+from app.services.analysis.add_analysis import save_analysis
 
 router = APIRouter()
 
@@ -16,6 +17,8 @@ def analyze(
             "job_id": job_id
         }
     )
+
+    save_analysis(db, resume_id, job_id, result)
 
     return {
         "match_score": result["match_result"]["match_score"],

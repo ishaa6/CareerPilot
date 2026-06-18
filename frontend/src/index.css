@@ -96,37 +96,6 @@ a {
   padding: 22px clamp(20px, 5vw, 48px);
   border-bottom: 1px solid var(--line);
 }
-
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  text-decoration: none;
-}
-
-.brand-mark {
-  width: 30px;
-  height: 30px;
-  flex-shrink: 0;
-}
-
-.brand-name {
-  font-family: var(--display);
-  font-weight: 600;
-  font-size: 19px;
-  letter-spacing: -0.01em;
-}
-
-.brand-tagline {
-  display: block;
-  font-family: var(--mono);
-  font-size: 11px;
-  color: var(--ink-soft);
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  margin-top: 1px;
-}
-
 .app-main {
   flex: 1;
   width: 100%;
@@ -135,14 +104,25 @@ a {
   padding: 40px clamp(20px, 5vw, 48px) 80px;
 }
 
-.app-footer {
-  border-top: 1px solid var(--line);
-  padding: 16px clamp(20px, 5vw, 48px);
+.header-nav {
+  display: flex;
+  gap: 20px;
+}
+
+.nav-link {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 12.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
   color: var(--ink-soft);
-  text-align: center;
-  letter-spacing: 0.02em;
+  text-decoration: none;
+  padding-bottom: 3px;
+  border-bottom: 1.5px solid transparent;
+}
+
+.nav-link.is-active {
+  color: var(--ink);
+  border-bottom-color: var(--amber);
 }
 
 /* ---------------------------------------------------------------
@@ -758,4 +738,311 @@ a {
   color: var(--ink-soft);
   cursor: pointer;
   padding: 0;
+}
+
+/* ---------------------------------------------------------------
+   Analysis page states
+----------------------------------------------------------------*/
+
+.loading-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--mono);
+  font-size: 13.5px;
+  color: var(--ink-soft);
+  padding: 30px 0;
+  justify-content: center;
+}
+
+.context-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.context-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 6px 12px;
+  background: var(--panel);
+  color: var(--ink-soft);
+}
+
+.context-chip strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.context-chip button {
+  background: none;
+  border: none;
+  font-family: var(--mono);
+  font-size: 11px;
+  text-decoration: underline;
+  color: var(--ink-soft);
+  cursor: pointer;
+  padding: 0;
+}
+
+/* ---------------------------------------------------------------
+   Source tabs (upload vs. existing)
+----------------------------------------------------------------*/
+
+.tab-row {
+  display: inline-flex;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  padding: 3px;
+  margin-bottom: 22px;
+  gap: 2px;
+}
+
+.tab-button {
+  border: none;
+  background: none;
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 13px;
+  padding: 7px 16px;
+  border-radius: 999px;
+  cursor: pointer;
+  color: var(--ink-soft);
+}
+
+.tab-button.is-active {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+/* ---------------------------------------------------------------
+   Picker list (existing resumes / jobs)
+----------------------------------------------------------------*/
+
+.picker-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.picker-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  text-align: left;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  padding: 12px 14px;
+  cursor: pointer;
+}
+
+.picker-row.is-selected {
+  border-color: var(--ink);
+  background: #fff;
+}
+
+.picker-radio {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 1.5px solid var(--line-strong);
+  flex-shrink: 0;
+  position: relative;
+}
+
+.picker-row.is-selected .picker-radio {
+  border-color: var(--ink);
+}
+
+.picker-row.is-selected .picker-radio::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  background: var(--ink);
+}
+
+.picker-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.picker-title {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.picker-sub {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--ink-soft);
+}
+
+/* ---------------------------------------------------------------
+   Agent trace
+----------------------------------------------------------------*/
+
+.trace-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.trace-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+
+.trace-row:last-child {
+  border-bottom: none;
+}
+
+.trace-indicator {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1.5px solid var(--line-strong);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--paper);
+}
+
+.trace-indicator svg {
+  width: 10px;
+  height: 10px;
+}
+
+.trace-done .trace-indicator {
+  border-color: var(--good);
+  background: var(--good);
+}
+
+.trace-done .trace-label {
+  color: var(--ink);
+}
+
+.trace-running .trace-indicator {
+  border-color: var(--amber);
+}
+
+.trace-running .trace-label {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.trace-error .trace-indicator {
+  border-color: var(--bad);
+  background: var(--bad);
+}
+
+.trace-spinner {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: 1.5px solid var(--amber-soft);
+  border-top-color: var(--amber);
+  animation: spin 700ms linear infinite;
+}
+
+.trace-x {
+  font-size: 11px;
+  line-height: 1;
+}
+
+/* ---------------------------------------------------------------
+   History
+----------------------------------------------------------------*/
+
+.history-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.history-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 4px;
+  border-bottom: 1px solid var(--line);
+  text-decoration: none;
+  color: var(--ink);
+}
+
+.history-list li:last-child .history-row {
+  border-bottom: none;
+}
+
+.history-score {
+  font-family: var(--mono);
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 999px;
+  padding: 4px 10px;
+  flex-shrink: 0;
+  min-width: 48px;
+  text-align: center;
+}
+
+.history-good {
+  background: var(--good-soft);
+  color: var(--good);
+}
+
+.history-warn {
+  background: var(--warn-soft);
+  color: var(--warn);
+}
+
+.history-bad {
+  background: var(--bad-soft);
+  color: var(--bad);
+}
+
+.history-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.history-title {
+  font-weight: 600;
+  font-size: 14.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.history-sub {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--ink-soft);
 }
