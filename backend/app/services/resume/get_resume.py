@@ -11,3 +11,6 @@ def get_resume_by_id(
         )
         .first()
     )
+
+def get_all_resumes(db):
+    return db.query(Resume).all()

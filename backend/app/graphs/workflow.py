@@ -59,3 +59,19 @@ workflow.set_entry_point(
 )
 
 graph = workflow.compile()
+
+#SSE
+
+NODE_ORDER = [
+    "resume_loader",
+    "job_loader",
+    "jd_matcher",
+    "project_recommender"
+]
+
+NODE_LABELS = {
+    "resume_loader": "Reading resume",
+    "job_loader": "Reading job description",
+    "jd_matcher": "Comparing resume to role",
+    "project_recommender": "Drafting project ideas"
+}

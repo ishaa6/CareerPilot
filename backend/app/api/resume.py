@@ -4,7 +4,7 @@ from app.services.resume.pdf_parser import extract_text
 from app.services.resume.resume_parser import parse_resume
 from app.services.resume.add_resume import save_resume
 from app.services.qdrant.resume_vectorizer import vectorize_resume
-from app.services.resume.get_resume import get_resume_by_id
+from app.services.resume.get_resume import (get_resume_by_id, get_all_resumes)
 
 from app.db.models import Resume
 from app.db.database import get_db
@@ -67,3 +67,23 @@ def get_resume(
         "id": resume.id, 
         "parsed_json": resume.parsed_json
     }
+
+@router.get("/")
+def list_resumes(
+    db = Depends(get_db)
+):
+
+    resumes = get_all_resumes(db)
+
+    return [
+        {
+            "id": resume.id,
+            "name": (
+                resume.parsed_json.get("name")
+                if resume.parsed_json
+                else "Unknown"
+            ),
+            
+        }
+        for resume in resumes
+    ]

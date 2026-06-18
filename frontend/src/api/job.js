@@ -8,3 +8,9 @@ export const createJob = async (jobData) => {
 
     return response.data;
 };
+
+export const listJobs = async () => {
+    const response = await api.get("/job/");
+ 
+    return response.data;
+};

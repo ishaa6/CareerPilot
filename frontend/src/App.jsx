@@ -67,7 +67,7 @@ function App() {
                 )}
             </main>
 
-            <footer className="app-footer">CareerPilot — match score, gaps, and what to build next</footer>
+            <footer className="app-footer">CareerPilot</footer>
         </div>
     );
 }

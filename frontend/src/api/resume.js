@@ -2,9 +2,9 @@ import api from './api'
 
 export const uploadResume = async(file) => {
     const formData = new FormData();
-
+ 
     formData.append("file", file)
-
+ 
     const response = await api.post(
         "/resume/upload",
         formData,
@@ -23,5 +23,11 @@ export const getResume = async(resumeId) => {
         `/resume/${resumeId}`
     );
 
+    return response.data;
+}
+
+export const listResumes = async() => {
+    const response = await api.get("/resume/");
+ 
     return response.data;
 }

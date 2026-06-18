@@ -15,3 +15,6 @@ def save_job(
     db.commit()
 
     return new_job
+
+def get_all_jobs(db):
+    return db.query(JobDescription).all()
