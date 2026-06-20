@@ -9,10 +9,10 @@ def save_analysis(
     record = AnalysisHistory(
         resume_id=resume_id,
         job_id=job_id,
-        match_score=result["match_score"],
-        missing_skills=result["missing_skills"],
+        match_score=result["match_result"]["match_score"],
+        missing_skills=result["match_result"]["missing_skills"],
         projects=result["projects"],
-        summary=result["summary"]
+        summary=result["match_result"]["summary"]
     )
 
     db.add(record)

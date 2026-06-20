@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { uploadResume, listResumes } from "../api/resume";
+import { uploadResume, listResumes, deleteResume } from "../api/resume";
 
 function formatDate(value) {
     if (!value) return "";
@@ -8,6 +8,15 @@ function formatDate(value) {
     } catch {
         return "";
     }
+}
+
+function TrashIcon() {
+    return (
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+            <path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6" stroke="currentColor" strokeWidth="1.8"
+                strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+    );
 }
 
 function ResumeUpload({ onUploaded }) {
@@ -24,6 +33,8 @@ function ResumeUpload({ onUploaded }) {
     const [existingError, setExistingError] = useState("");
     const [selectedId, setSelectedId] = useState(null);
     const [loadedExisting, setLoadedExisting] = useState(false);
+    const [confirmDeleteId, setConfirmDeleteId] = useState(null);
+    const [deleting, setDeleting] = useState(null);
 
     useEffect(() => {
         if (mode !== "existing" || loadedExisting) return;
@@ -32,7 +43,6 @@ function ResumeUpload({ onUploaded }) {
 
         async function load() {
             setExistingLoading(true);
-
             try {
                 const data = await listResumes();
                 if (active) setExisting(data);
@@ -47,10 +57,7 @@ function ResumeUpload({ onUploaded }) {
         }
 
         load();
-
-        return () => {
-            active = false;
-        };
+        return () => { active = false; };
     }, [mode, loadedExisting]);
 
     const pickFile = (candidate) => {
@@ -70,26 +77,17 @@ function ResumeUpload({ onUploaded }) {
     };
 
     const handleUpload = async () => {
-        if (!file) {
-            setUploadError("Choose a resume PDF first.");
-            return;
-        }
+        if (!file) { setUploadError("Choose a resume PDF first."); return; }
 
         try {
             setUploading(true);
             setUploadError("");
-
             const data = await uploadResume(file);
             const resumeId = data.resume_id || data.id;
-
             if (!resumeId) {
-                setUploadError(
-                    "Uploaded, but the server didn't send back a resume ID, so the " +
-                        "next step can't run yet."
-                );
+                setUploadError("Uploaded, but the server didn't send back a resume ID.");
                 return;
             }
-
             onUploaded({ id: resumeId, fileName: data.file_name || file.name });
         } catch (err) {
             setUploadError(err?.response?.data?.detail || "Failed to upload resume.");
@@ -101,27 +99,38 @@ function ResumeUpload({ onUploaded }) {
     const handleUseExisting = () => {
         const resume = existing.find((item) => item.id === selectedId);
         if (!resume) return;
-
         onUploaded({ id: resume.id, fileName: resume.file_name || resume.name || "Saved resume" });
+    };
+
+    const handleDelete = async (id) => {
+        setDeleting(id);
+        try {
+            await deleteResume(id);
+            setExisting((prev) => prev.filter((r) => r.id !== id));
+            if (selectedId === id) setSelectedId(null);
+        } catch {
+            // silently keep the row if delete fails
+        } finally {
+            setDeleting(null);
+            setConfirmDeleteId(null);
+        }
     };
 
     return (
         <div className="panel">
+            <p className="panel-eyebrow">Step 01</p>
             <h2 className="panel-title">Add your resume</h2>
+            <p className="panel-sub">Upload a new PDF, or reuse one already on file.</p>
 
             <div className="tab-row">
-                <button
-                    type="button"
+                <button type="button"
                     className={"tab-button" + (mode === "upload" ? " is-active" : "")}
-                    onClick={() => setMode("upload")}
-                >
+                    onClick={() => setMode("upload")}>
                     Upload new
                 </button>
-                <button
-                    type="button"
+                <button type="button"
                     className={"tab-button" + (mode === "existing" ? " is-active" : "")}
-                    onClick={() => setMode("existing")}
-                >
+                    onClick={() => setMode("existing")}>
                     Choose existing
                 </button>
             </div>
@@ -129,56 +138,30 @@ function ResumeUpload({ onUploaded }) {
             {mode === "upload" && (
                 <>
                     <div
-                        className={
-                            "dropzone" +
-                            (dragActive ? " is-active" : "") +
-                            (file ? " has-file" : "")
-                        }
+                        className={"dropzone" + (dragActive ? " is-active" : "") + (file ? " has-file" : "")}
                         onClick={() => !file && inputRef.current?.click()}
-                        onDragOver={(e) => {
-                            e.preventDefault();
-                            setDragActive(true);
-                        }}
+                        onDragOver={(e) => { e.preventDefault(); setDragActive(true); }}
                         onDragLeave={() => setDragActive(false)}
                         onDrop={handleDrop}
                     >
                         {file ? (
                             <span className="file-chip">
                                 {file.name}
-                                <button
-                                    type="button"
-                                    className="file-chip-remove"
-                                    aria-label="Remove file"
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        setFile(null);
-                                    }}
-                                >
-                                    ✕
-                                </button>
+                                <button type="button" className="file-chip-remove" aria-label="Remove file"
+                                    onClick={(e) => { e.stopPropagation(); setFile(null); }}>✕</button>
                             </span>
                         ) : (
                             <>
                                 <svg className="dropzone-icon" viewBox="0 0 24 24" fill="none">
-                                    <path
-                                        d="M12 4v11m0 0-4-4m4 4 4-4M5 17v2a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-2"
-                                        stroke="currentColor"
-                                        strokeWidth="1.6"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                    />
+                                    <path d="M12 4v11m0 0-4-4m4 4 4-4M5 17v2a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-2"
+                                        stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
                                 </svg>
                                 <p className="dropzone-title">Drop your resume here</p>
                                 <p className="dropzone-hint">or click to browse</p>
                             </>
                         )}
-                        <input
-                            ref={inputRef}
-                            type="file"
-                            accept="application/pdf"
-                            hidden
-                            onChange={(e) => pickFile(e.target.files?.[0])}
-                        />
+                        <input ref={inputRef} type="file" accept="application/pdf" hidden
+                            onChange={(e) => pickFile(e.target.files?.[0])} />
                     </div>
 
                     <div className="btn-row" style={{ marginTop: 20 }}>
@@ -200,42 +183,53 @@ function ResumeUpload({ onUploaded }) {
                             Loading saved resumes…
                         </p>
                     )}
-
-                    {!existingLoading && existingError && (
-                        <p className="message message-error">{existingError}</p>
-                    )}
-
+                    {!existingLoading && existingError && <p className="message message-error">{existingError}</p>}
                     {!existingLoading && !existingError && existing.length === 0 && (
                         <div className="empty-state">
                             <p>No saved resumes yet — switch to "Upload new" to add one.</p>
                         </div>
                     )}
-
                     {!existingLoading && existing.length > 0 && (
                         <ul className="picker-list">
                             {existing.map((item) => (
                                 <li key={item.id}>
-                                    <button
-                                        type="button"
-                                        className={"picker-row" + (selectedId === item.id ? " is-selected" : "")}
-                                        onClick={() => setSelectedId(item.id)}
-                                    >
-                                        <span className="picker-radio" />
-                                        <span className="picker-meta">
-                                            <span className="picker-title">
-                                                {item.name || item.file_name || "Resume"}
-                                            </span>
-                                            <span className="picker-sub">
-                                                {item.file_name}
-                                                {item.created_at ? ` · ${formatDate(item.created_at)}` : ""}
-                                            </span>
-                                        </span>
-                                    </button>
+                                    {confirmDeleteId === item.id ? (
+                                        <div className="picker-confirm">
+                                            <span className="picker-confirm-label">Delete this resume? </span>
+                                            <button type="button" className="picker-confirm-yes"
+                                                disabled={deleting === item.id}
+                                                onClick={() => handleDelete(item.id)}>
+                                                {deleting === item.id ? <span className="spinner" style={{ color: "#b8513f" }} /> : null}
+                                                Yes, delete
+                                            </button>
+                                            <button type="button" className="picker-confirm-no"
+                                                onClick={() => setConfirmDeleteId(null)}>
+                                                Cancel
+                                            </button>
+                                        </div>
+                                    ) : (
+                                        <div className={"picker-row" + (selectedId === item.id ? " is-selected" : "")}>
+                                            <button type="button" className="picker-row-select"
+                                                onClick={() => setSelectedId(item.id)}>
+                                                <span className="picker-radio" />
+                                                <span className="picker-meta">
+                                                    <span className="picker-title">{item.name || item.file_name || "Resume"}</span>
+                                                    <span className="picker-sub">
+                                                        {item.file_name}{item.created_at ? ` · ${formatDate(item.created_at)}` : ""}
+                                                    </span>
+                                                </span>
+                                            </button>
+                                            <button type="button" className="picker-delete"
+                                                aria-label="Delete resume"
+                                                onClick={() => setConfirmDeleteId(item.id)}>
+                                                <TrashIcon />
+                                            </button>
+                                        </div>
+                                    )}
                                 </li>
                             ))}
                         </ul>
                     )}
-
                     <div className="btn-row" style={{ marginTop: 20 }}>
                         <button className="btn" onClick={handleUseExisting} disabled={!selectedId}>
                             Use this resume

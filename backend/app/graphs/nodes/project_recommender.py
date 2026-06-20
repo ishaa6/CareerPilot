@@ -7,8 +7,14 @@ def project_recommender(state):
             state["match_result"]["missing_skills"]
         )
 
+        print("PROJECT RECCOS:")
+        print(result.projects)
+
         return {
-            "projects": result.projects
+            "projects": [
+                project.model_dump()
+                for project in result.projects
+            ]
         }
     
     except Exception:

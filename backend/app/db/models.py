@@ -7,6 +7,7 @@ class Resume(Base):
     __tablename__ = "resumes"
 
     id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
+    file_name = Column(String)
     raw_text = Column(Text)
     parsed_json = Column(JSONB)
 

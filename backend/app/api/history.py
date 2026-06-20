@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 
 from app.db.database import get_db
 from app.services.analysis.get_analysis import list_analyses, get_analysis_by_id
+from app.services.analysis.delete_analysis import delete_analysis_by_id
 
 router = APIRouter()
 
@@ -11,6 +12,10 @@ def get_history(
     db: Session = Depends(get_db)
 ):
     rows = list_analyses(db)
+
+    print("ROWZZZ:")
+    for analysis, job, resume in rows:
+        print(resume)
 
     return [
         {
@@ -50,3 +55,12 @@ def get_history_item(
         "summary": analysis.summary,
         "created_at": analysis.created_at
     }
+
+@router.delete("/{id}")
+def delete_history_item(id: str, db: Session = Depends(get_db)):
+    deleted = delete_analysis_by_id(db, id)
+
+    if not deleted:
+        raise HTTPException(status_code=404, detail="Analysis not found")
+    
+    return {"message": "Analysis deleted"}

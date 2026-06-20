@@ -31,3 +31,9 @@ export const listResumes = async() => {
  
     return response.data;
 }
+
+export const deleteResume = async(resumeId) => {
+    const response = await api.delete(`/resume/${resumeId}`)
+
+    return response.data;
+}

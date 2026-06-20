@@ -11,3 +11,9 @@ export const getHistoryItem = async (id) => {
 
     return response.data;
 };
+
+export const deleteHistoryItem = async (id) => {
+    const response = await api.delete(`/history/${id}`);
+
+    return response.data;
+};
