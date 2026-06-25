@@ -10,6 +10,7 @@ def get_model():
     return model
 
 def embed_text(text: str):
+    model = get_model()
     return model.encode(text).tolist()
 
 VECTOR_SIZE = 384
