@@ -1,4 +1,4 @@
-x`set -e
+set -e
 echo "Running DB migrations..."
 python -m app.db.initialize 2>/dev/null || true
 echo "Starting server..."
