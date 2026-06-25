@@ -17,9 +17,9 @@ def create_resume_collection():
         )
     )
 
-if client.collection_exists("resumes"):
-    client.delete_collection(
-        collection_name="resumes"
-    )
+# if client.collection_exists("resumes"):
+#     client.delete_collection(
+#         collection_name="resumes"
+#     )
 
-create_resume_collection() 
+# create_resume_collection() 
