@@ -43,3 +43,7 @@ app.include_router(
 @app.get("/")
 def home():
     return {"message": "Welcome to Career Pilot"}
+
+@app.get("/health")
+def health():
+    return {"status": "ok"}

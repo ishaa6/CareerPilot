@@ -1,4 +1,8 @@
+<<<<<<< Updated upstream
 from sqlalchemy import Column, String, Text
+=======
+from sqlalchemy import Column, String, Text, Integer, DateTime, func, ForeignKey
+>>>>>>> Stashed changes
 from sqlalchemy.dialects.postgresql import JSONB
 from app.db.database import Base
 import uuid 

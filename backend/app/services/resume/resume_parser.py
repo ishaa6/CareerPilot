@@ -13,18 +13,9 @@ gemini_llm = ChatGoogleGenerativeAI(
     temperature=0
 )
 
-# groq_llm = ChatGroq(
-#     model="llama-3.3-70b-versatile",
-#     temperature=0
-# )
-
 gemini_parser = gemini_llm.with_structured_output(
     ResumeData
 )
-
-# groq_parser = groq_llm.with_structured_output(
-#     ResumeData
-# )
 
 def parse_resume(text):
     prompt = f"""
@@ -41,7 +32,7 @@ def parse_resume(text):
         return gemini_parser.invoke(prompt)
 
     except Exception:
-        # return groq_parser.invoke(prompt)
+        
         print(f"""
             *********
             API ERROR
