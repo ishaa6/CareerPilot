@@ -1,111 +1,1198 @@
+/* ---------------------------------------------------------------
+   CareerPilot — design tokens
+   An instrument-panel read on a resume/job match: warm paper
+   surfaces, ink type, amber accent, and a banded gauge as the
+   one signature element.
+----------------------------------------------------------------*/
+
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+  --ink: #14181f;
+  --ink-soft: #4a4f5a;
+  --paper: #faf8f4;
+  --panel: #f2efe6;
+  --line: #ddd7c9;
+  --line-strong: #c7bfa9;
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
+  --amber: #d98a2e;
+  --amber-soft: #f3dfb9;
+  --good: #2f7a52;
+  --good-soft: #d8e9de;
+  --warn: #d98a2e;
+  --warn-soft: #f3dfb9;
+  --bad: #b8513f;
+  --bad-soft: #ecd9d3;
 
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  --display: "Space Grotesk", system-ui, sans-serif;
+  --body: "Inter", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", monospace;
 
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
+  --radius: 10px;
+  --shadow-panel: 0 1px 0 rgba(20, 24, 31, 0.04), 0 12px 24px -16px rgba(20, 24, 31, 0.18);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
-
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
-}
-
-body {
-  margin: 0;
-}
-
-#root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
+* {
   box-sizing: border-box;
 }
 
-h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
+html,
+body {
+  margin: 0;
+  padding: 0;
 }
 
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
-  }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font: 16px/1.5 var(--body);
+  -webkit-font-smoothing: antialiased;
 }
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
+
+h1, h2, h3 {
+  font-family: var(--display);
+  margin: 0;
+  color: var(--ink);
+  letter-spacing: -0.01em;
 }
+
 p {
   margin: 0;
 }
 
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
+button, input, textarea {
+  font-family: inherit;
 }
 
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+a {
+  color: var(--ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--amber);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition-duration: 0.001ms !important;
+    animation-duration: 0.001ms !important;
+  }
+}
+
+/* ---------------------------------------------------------------
+   App shell
+----------------------------------------------------------------*/
+
+.app-shell {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 22px clamp(20px, 5vw, 48px);
+  border-bottom: 1px solid var(--line);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.brand-mark {
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+}
+
+.brand-name {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 19px;
+  letter-spacing: -0.01em;
+}
+
+.brand-tagline {
+  display: block;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-soft);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-top: 1px;
+}
+
+.header-nav {
+  display: flex;
+  gap: 20px;
+}
+
+.nav-link {
+  font-family: var(--mono);
+  font-size: 12.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--ink-soft);
+  text-decoration: none;
+  padding-bottom: 3px;
+  border-bottom: 1.5px solid transparent;
+}
+
+.nav-link.is-active {
+  color: var(--ink);
+  border-bottom-color: var(--amber);
+}
+
+.app-main {
+  flex: 1;
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 40px clamp(20px, 5vw, 48px) 80px;
+}
+
+.app-footer {
+  border-top: 1px solid var(--line);
+  padding: 16px clamp(20px, 5vw, 48px);
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-soft);
+  text-align: center;
+  letter-spacing: 0.02em;
+}
+
+/* ---------------------------------------------------------------
+   Step rail
+----------------------------------------------------------------*/
+
+.stepper {
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+  margin-bottom: 36px;
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.step-button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+  color: var(--ink-soft);
+}
+
+.step-button:disabled {
+  cursor: default;
+}
+
+.step-index {
+  font-family: var(--mono);
+  font-size: 13px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1.5px solid var(--line-strong);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: var(--paper);
+  transition: border-color 160ms ease, background 160ms ease, color 160ms ease;
+}
+
+.step.is-current .step-index {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.step.is-done .step-index {
+  border-color: var(--good);
+  color: var(--good);
+}
+
+.step-meta {
+  display: flex;
+  flex-direction: column;
+}
+
+.step-label {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--ink);
+}
+
+.step.is-current .step-label {
+  color: var(--ink);
+}
+
+.step:not(.is-current):not(.is-done) .step-label {
+  color: var(--ink-soft);
+}
+
+.step-detail {
+  font-size: 12px;
+  color: var(--ink-soft);
+  max-width: 16ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.step-rule {
+  height: 1px;
+  flex: 1;
+  background: var(--line);
+  margin: 0 12px;
+  align-self: flex-start;
+  margin-top: 15px;
+}
+
+@media (max-width: 560px) {
+  .step-detail {
+    display: none;
+  }
+  .step-rule {
+    margin: 0 6px;
+  }
+}
+
+/* ---------------------------------------------------------------
+   Panels / cards
+----------------------------------------------------------------*/
+
+.panel {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-panel);
+  padding: 28px clamp(20px, 4vw, 36px);
+}
+
+.panel + .panel {
+  margin-top: 20px;
+}
+
+.panel-eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-soft);
+  margin-bottom: 6px;
+}
+
+.panel-title {
+  font-size: 22px;
+  margin-bottom: 6px;
+}
+
+.panel-sub {
+  color: var(--ink-soft);
+  font-size: 14.5px;
+  margin-bottom: 22px;
+  max-width: 48ch;
+}
+
+/* ---------------------------------------------------------------
+   Form elements
+----------------------------------------------------------------*/
+
+.field {
+  margin-bottom: 18px;
+}
+
+.field-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: var(--ink);
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 540px) {
+  .field-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.text-input,
+.text-area {
+  width: 100%;
+  border: 1px solid var(--line-strong);
+  background: #fff;
+  border-radius: 7px;
+  padding: 10px 12px;
+  font-size: 14.5px;
+  color: var(--ink);
+}
+
+.text-area {
+  resize: vertical;
+  min-height: 160px;
+  line-height: 1.55;
+}
+
+.text-input:focus,
+.text-area:focus {
+  border-color: var(--ink);
+}
+
+.field-hint {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11.5px;
+  color: var(--ink-soft);
+  margin-top: 5px;
+  font-family: var(--mono);
+}
+
+.btn {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 14px;
+  border: none;
+  border-radius: 7px;
+  padding: 11px 20px;
+  cursor: pointer;
+  background: var(--ink);
+  color: var(--paper);
+  transition: transform 120ms ease, opacity 120ms ease;
+}
+
+.btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.btn-ghost {
+  background: none;
+  color: var(--ink);
+  border: 1px solid var(--line-strong);
+}
+
+.btn-link {
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--ink-soft);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.btn-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 6px;
+}
+
+.spinner {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  border: 2px solid rgba(250, 248, 244, 0.35);
+  border-top-color: currentColor;
+  display: inline-block;
+  animation: spin 700ms linear infinite;
+  margin-right: 8px;
+  vertical-align: -2px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.message {
+  font-size: 13.5px;
+  padding: 10px 12px;
+  border-radius: 7px;
+  margin-top: 14px;
+}
+
+.message-error {
+  background: var(--bad-soft);
+  color: var(--bad);
+}
+
+.message-success {
+  background: var(--good-soft);
+  color: var(--good);
+}
+
+.message-note {
+  background: var(--panel);
+  color: var(--ink-soft);
+}
+
+/* ---------------------------------------------------------------
+   Resume upload
+----------------------------------------------------------------*/
+
+.dropzone {
+  border: 1.5px dashed var(--line-strong);
+  border-radius: var(--radius);
+  padding: 36px 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 140ms ease, background 140ms ease;
+  background: var(--panel);
+}
+
+.dropzone.is-active {
+  border-color: var(--amber);
+  background: var(--amber-soft);
+}
+
+.dropzone.has-file {
+  cursor: default;
+}
+
+.dropzone-icon {
+  width: 30px;
+  height: 30px;
+  margin: 0 auto 12px;
+  color: var(--ink-soft);
+}
+
+.dropzone-title {
+  font-weight: 600;
+  font-size: 14.5px;
+  margin-bottom: 4px;
+}
+
+.dropzone-hint {
+  font-size: 12.5px;
+  color: var(--ink-soft);
+}
+
+.file-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 13px;
+  background: #fff;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  padding: 6px 14px;
+}
+
+.file-chip-remove {
+  background: none;
+  border: none;
+  color: var(--ink-soft);
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  padding: 0;
+}
+
+/* ---------------------------------------------------------------
+   Gauge
+----------------------------------------------------------------*/
+
+.gauge-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.gauge {
+  position: relative;
+}
+
+.gauge-readout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.gauge-value {
+  font-family: var(--mono);
+  font-size: 38px;
+  font-weight: 500;
+  color: var(--ink);
+  line-height: 1;
+}
+
+.gauge-value-suffix {
+  font-family: var(--mono);
+  font-size: 18px;
+  color: var(--ink-soft);
+}
+
+.gauge-caption {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-top: 2px;
+}
+
+.gauge-zone-labels {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: -6px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.verdict-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  padding: 5px 12px;
+  border-radius: 999px;
+  margin-top: 18px;
+}
+
+.verdict-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+
+.verdict-good {
+  background: var(--good-soft);
+  color: var(--good);
+}
+.verdict-good .verdict-dot {
+  background: var(--good);
+}
+
+.verdict-warn {
+  background: var(--warn-soft);
+  color: var(--warn);
+}
+.verdict-warn .verdict-dot {
+  background: var(--warn);
+}
+
+.verdict-bad {
+  background: var(--bad-soft);
+  color: var(--bad);
+}
+.verdict-bad .verdict-dot {
+  background: var(--bad);
+}
+
+.summary-text {
+  margin-top: 18px;
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+  border-top: 1px solid var(--line);
+  padding-top: 18px;
+}
+
+/* ---------------------------------------------------------------
+   Skill gaps
+----------------------------------------------------------------*/
+
+.gap-count {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--ink-soft);
+  background: var(--panel);
+  border-radius: 999px;
+  padding: 2px 9px;
+  margin-left: 8px;
+}
+
+.gap-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.gap-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 14.5px;
+}
+
+.gap-row:last-child {
+  border-bottom: none;
+}
+
+.gap-marker {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  border: 1.5px solid var(--bad);
+  flex-shrink: 0;
+}
+
+.empty-state {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 14.5px;
+  color: var(--ink-soft);
+}
+
+.empty-state-icon {
+  width: 18px;
+  height: 18px;
+  color: var(--good);
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+/* ---------------------------------------------------------------
+   Project recommendations
+----------------------------------------------------------------*/
+
+.project-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.project-card {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px 18px;
+  background: var(--panel);
+}
+
+.project-title {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 15.5px;
+  margin-bottom: 6px;
+}
+
+.project-desc {
+  font-size: 14px;
+  color: var(--ink-soft);
+  line-height: 1.55;
+  margin-bottom: 12px;
+}
+
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chip {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  border: 1px solid var(--line-strong);
+  background: #fff;
+  border-radius: 999px;
+  padding: 3px 10px;
+  color: var(--ink-soft);
+}
+
+/* ---------------------------------------------------------------
+   Analysis page states
+----------------------------------------------------------------*/
+
+.loading-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--mono);
+  font-size: 13.5px;
+  color: var(--ink-soft);
+  padding: 30px 0;
+  justify-content: center;
+}
+
+.context-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.context-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 6px 12px;
+  background: var(--panel);
+  color: var(--ink-soft);
+}
+
+.context-chip strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.context-chip button {
+  background: none;
+  border: none;
+  font-family: var(--mono);
+  font-size: 11px;
+  text-decoration: underline;
+  color: var(--ink-soft);
+  cursor: pointer;
+  padding: 0;
+}
+
+/* ---------------------------------------------------------------
+   Source tabs (upload vs. existing)
+----------------------------------------------------------------*/
+
+.tab-row {
+  display: inline-flex;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  padding: 3px;
+  margin-bottom: 22px;
+  gap: 2px;
+}
+
+.tab-button {
+  border: none;
+  background: none;
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 13px;
+  padding: 7px 16px;
+  border-radius: 999px;
+  cursor: pointer;
+  color: var(--ink-soft);
+}
+
+.tab-button.is-active {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+/* ---------------------------------------------------------------
+   Picker list (existing resumes / jobs)
+----------------------------------------------------------------*/
+
+.picker-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.picker-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  text-align: left;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  padding: 12px 14px;
+  cursor: pointer;
+}
+
+.picker-row.is-selected {
+  border-color: var(--ink);
+  background: #fff;
+}
+
+.picker-radio {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 1.5px solid var(--line-strong);
+  flex-shrink: 0;
+  position: relative;
+}
+
+.picker-row.is-selected .picker-radio {
+  border-color: var(--ink);
+}
+
+.picker-row.is-selected .picker-radio::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  background: var(--ink);
+}
+
+.picker-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.picker-title {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.picker-sub {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--ink-soft);
+}
+
+/* ---------------------------------------------------------------
+   Agent trace
+----------------------------------------------------------------*/
+
+.trace-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.trace-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+
+.trace-row:last-child {
+  border-bottom: none;
+}
+
+.trace-indicator {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1.5px solid var(--line-strong);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--paper);
+}
+
+.trace-indicator svg {
+  width: 10px;
+  height: 10px;
+}
+
+.trace-done .trace-indicator {
+  border-color: var(--good);
+  background: var(--good);
+}
+
+.trace-done .trace-label {
+  color: var(--ink);
+}
+
+.trace-running .trace-indicator {
+  border-color: var(--amber);
+}
+
+.trace-running .trace-label {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.trace-error .trace-indicator {
+  border-color: var(--bad);
+  background: var(--bad);
+}
+
+.trace-spinner {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: 1.5px solid var(--amber-soft);
+  border-top-color: var(--amber);
+  animation: spin 700ms linear infinite;
+}
+
+.trace-x {
+  font-size: 11px;
+  line-height: 1;
+}
+
+/* ---------------------------------------------------------------
+   History
+----------------------------------------------------------------*/
+
+.history-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.history-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 4px;
+  border-bottom: 1px solid var(--line);
+  text-decoration: none;
+  color: var(--ink);
+}
+
+.history-list li:last-child .history-row {
+  border-bottom: none;
+}
+
+.history-score {
+  font-family: var(--mono);
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 999px;
+  padding: 4px 10px;
+  flex-shrink: 0;
+  min-width: 48px;
+  text-align: center;
+}
+
+.history-good {
+  background: var(--good-soft);
+  color: var(--good);
+}
+
+.history-warn {
+  background: var(--warn-soft);
+  color: var(--warn);
+}
+
+.history-bad {
+  background: var(--bad-soft);
+  color: var(--bad);
+}
+
+.history-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.history-title {
+  font-weight: 600;
+  font-size: 14.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.history-sub {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--ink-soft);
+}
+
+/* ---------------------------------------------------------------
+   Picker row — split into a selectable area and a delete button
+   (replaces the old full-button picker-row for the existing tabs)
+----------------------------------------------------------------*/
+
+.picker-row {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  overflow: hidden;
+}
+
+.picker-row.is-selected {
+  border-color: var(--ink);
+  background: #fff;
+}
+
+.picker-row-select {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: left;
+  padding: 12px 14px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  min-width: 0;
+}
+
+.picker-delete {
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  border-left: 1px solid var(--line);
+  color: var(--ink-soft);
+  padding: 0 14px;
+  align-self: stretch;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.picker-delete:hover {
+  color: var(--bad);
+  background: var(--bad-soft);
+}
+
+/* ---------------------------------------------------------------
+   Inline confirm — picker rows
+----------------------------------------------------------------*/
+
+.picker-confirm {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid var(--bad);
+  border-radius: 8px;
+  background: var(--bad-soft);
+  padding: 10px 14px;
+  flex-wrap: wrap;
+}
+
+.picker-confirm-label {
+  font-size: 13.5px;
+  color: var(--bad);
+  flex: 1;
+  min-width: 140px;
+}
+
+.picker-confirm-yes {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 13px;
+  border: none;
+  border-radius: 6px;
+  padding: 7px 14px;
+  background: var(--bad);
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.picker-confirm-yes:disabled {
+  opacity: 0.6;
+}
+
+.picker-confirm-no {
+  font-family: var(--mono);
+  font-size: 12px;
+  background: none;
+  border: 1px solid var(--bad);
+  border-radius: 6px;
+  padding: 7px 12px;
+  color: var(--bad);
+  cursor: pointer;
+}
+
+/* ---------------------------------------------------------------
+   History row — add delete button alongside the link
+----------------------------------------------------------------*/
+
+.history-row-wrap {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--line);
+}
+
+.history-list li:last-child .history-row-wrap {
+  border-bottom: none;
+}
+
+/* Override the old border-bottom on the anchor now that the wrapper holds it */
+.history-row-wrap .history-row {
+  border-bottom: none;
+  flex: 1;
+  min-width: 0;
+}
+
+.history-delete {
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  color: var(--ink-soft);
+  padding: 14px 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.history-delete:hover {
+  color: var(--bad);
+}
+
+.history-confirm {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 4px;
+  border-bottom: 1px solid var(--line);
+  flex-wrap: wrap;
+}
+
+.history-list li:last-child .history-confirm {
+  border-bottom: none;
+}
+
+.history-confirm-label {
+  font-size: 13.5px;
+  color: var(--bad);
+  flex: 1;
+  min-width: 160px;
 }

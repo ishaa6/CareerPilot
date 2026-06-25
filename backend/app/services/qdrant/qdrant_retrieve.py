@@ -9,9 +9,6 @@ def retrieve_resume_chunks(
     jd_text: str,
     limit: int = 10
 ):
-    print("JD")
-    print(jd_text)
-    
     query_vector = embed_text(jd_text)
 
     results = client.query_points(

@@ -32,10 +32,4 @@ def parse_resume(text):
         return gemini_parser.invoke(prompt)
 
     except Exception:
-        
-        print(f"""
-            *********
-            API ERROR
-            *********
-        """)
         return ""

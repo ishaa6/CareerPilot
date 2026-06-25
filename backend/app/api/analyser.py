@@ -1,20 +1,24 @@
-<<<<<<< Updated upstream
-from fastapi import APIRouter
-=======
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
->>>>>>> Stashed changes
+
+import time
 
 from app.graphs.workflow import graph
+from app.services.analysis.add_analysis import save_analysis
+from app.db.database import get_db
 
 router = APIRouter()
 
 @router.post("/")
 def analyze(
     resume_id: str,
-    job_id: str
+    job_id: str,
+    db: Session = Depends(get_db)
 ):
-<<<<<<< Updated upstream
+    
+    request_start = time.time()
+
+    graph_start = time.time()
     
     result = graph.invoke(
         {
@@ -22,23 +26,10 @@ def analyze(
             "job_id": job_id
         }
     )
-=======
-    try:    
-        result = graph.invoke(
-            {
-                "resume_id": resume_id,
-                "job_id": job_id
-            }
-        )
-    except Exception as e:
-        print("Exception: ", e)
-        raise HTTPException(status_code=500, detail="Analysis failed. Please try again.")
 
-    try:
-        save_analysis(db, resume_id, job_id, result)
-    except Exception as e:
-        print(f"Could not persist analysis: {e}")
->>>>>>> Stashed changes
+    save_start = time.time()
+
+    save_analysis(db, resume_id, job_id, result)
 
     return {
         "match_score": result["match_result"]["match_score"],

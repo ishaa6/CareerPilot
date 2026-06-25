@@ -71,6 +71,7 @@ function HistoryPage() {
         <div className="panel">
             <p className="panel-eyebrow">History</p>
             <h2 className="panel-title">Past analyses</h2>
+            <p className="panel-sub">Every readout you've run, most recent first.</p>
 
             {loading && (
                 <p className="loading-row" style={{ justifyContent: "flex-start" }}>

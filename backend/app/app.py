@@ -5,6 +5,7 @@ from app.api.resume import router as resume_router
 from app.api.job import router as job_router
 from app.api.matcher import router as match_router
 from app.api.analyser import router as analyse_router
+from app.api.history import router as history_router
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(title="CareerPilot")
@@ -40,10 +41,11 @@ app.include_router(
     prefix="/analyse"
 )
 
+app.include_router(
+    history_router,
+    prefix="/history"
+)
+
 @app.get("/")
 def home():
     return {"message": "Welcome to Career Pilot"}
-
-@app.get("/health")
-def health():
-    return {"status": "ok"}

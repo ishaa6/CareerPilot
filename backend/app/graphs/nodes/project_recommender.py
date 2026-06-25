@@ -2,15 +2,11 @@ from app.agents.project_recommender import recommend_projects
 
 def project_recommender(state):
 
-    result = recommend_projects(
-        state["match_result"]["missing_skills"]
-    )
+    try:
+        result = recommend_projects(
+            state["match_result"]["missing_skills"]
+        )
 
-<<<<<<< Updated upstream
-    return {
-        "projects": result.projects
-    }
-=======
         return {
             "projects": [
                 project.model_dump()
@@ -22,4 +18,3 @@ def project_recommender(state):
         return {
             "projects": []
         }
->>>>>>> Stashed changes

@@ -9,8 +9,6 @@ def jd_matcher(state):
     )
 
     resume_context = "\n\n".join(chunks)
-    print("RESUME CONTEXT")
-    print(resume_context)
 
     result = match_resmue_jd(
         resume_context,
