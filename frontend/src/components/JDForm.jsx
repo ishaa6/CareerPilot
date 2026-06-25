@@ -145,7 +145,6 @@ function JDForm({ onCreated }) {
                                 value={formData.description} onChange={handleChange}
                                 maxLength={MAX_DESCRIPTION} placeholder="Paste the full posting here..." required />
                             <div className="field-hint">
-                                <span>Required and preferred skills both help</span>
                                 <span>{formData.description.length}/{MAX_DESCRIPTION}</span>
                             </div>
                         </div>

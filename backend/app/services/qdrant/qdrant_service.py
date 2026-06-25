@@ -1,9 +1,11 @@
 from qdrant_client import QdrantClient
 from qdrant_client.models import VectorParams, Distance
 from app.services.qdrant.embeddings import VECTOR_SIZE
+import os
 
 client = QdrantClient(
-    url="http://localhost:6333"
+    url=os.getenv("QDRANT_URL"),
+    api_key=os.getenv("QDRANT_API_KEY"),
 )
 
 def create_resume_collection():
